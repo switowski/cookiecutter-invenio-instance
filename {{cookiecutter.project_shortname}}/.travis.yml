@@ -9,10 +9,6 @@ notifications:
     on_success: never # default: always
     on_failure: always # default: always
 
-# Selenium webdriver for Chrome fails if not on sudo
-# - see https://github.com/travis-ci/travis-ci/issues/8836
-sudo: true
-
 language: python
 
 matrix:
@@ -47,7 +43,7 @@ before_install:
   - mkdir /tmp/elasticsearch
   - wget -O - https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{{ elasticsearch_test_version }}.tar.gz | tar xz --directory=/tmp/elasticsearch --strip-components=1
   - "/tmp/elasticsearch/bin/elasticsearch &"
-  # Gecko webdriver: https://github.com/mozilla/geckodriver/releases/
+  # Chrome webdriver for Selenium
   - "PATH=$PATH:$HOME/webdrivers"
   - "if [ ${E2E} == 'yes' ] && [ ! -f $HOME/webdrivers/chromedriver ]; then wget https://chromedriver.storage.googleapis.com/2.36/chromedriver_linux64.zip -P $HOME/webdrivers; unzip -d $HOME/webdrivers $HOME/webdrivers/chromedriver_linux64.zip; fi"
   - "nvm install 6; nvm use 6"
@@ -64,8 +60,7 @@ install:
 before_script:
   # https://docs.travis-ci.com/user/gui-and-headless-browsers/
   - "export DISPLAY=:99.0"
-  - "export E2E_WEBDRIVER_BROWSERS='Chrome'"
-  - "if [ ${E2E} == 'yes' ]; then sh -e /etc/init.d/xvfb start; sleep 5; fi"
+  - "if [ ${E2E} == 'yes' ]; then sh -e /etc/init.d/xvfb start; sleep 3; fi"
   # Allow ES to start
   - sleep 10
 

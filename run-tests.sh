@@ -36,6 +36,8 @@ git add -A
 
 pip install -e .\[all\] --quiet
 
+./scripts/bootstrap
+
 check-manifest -u || true
 
 ./run-tests.sh
